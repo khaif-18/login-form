@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { Link } from 'components';
 import { Layout } from 'components/account';
-import { userService, alertService } from 'services';
+import { userService } from '@/services/user.service';
+import { alertService } from '@/services/alert.service';
+import Link from 'next/link';
 
 export default Login;
 
@@ -23,14 +24,13 @@ function Login() {
     const { register, handleSubmit, formState } = useForm(formOptions);
     const { errors } = formState;
 
-    function onSubmit({ username, password }) {
+    function onSubmit({ username, password } : any) {
         return userService.login(username, password)
             .then(() => {
                 // get return url from query parameters or default to '/'
-                const returnUrl = router.query.returnUrl || '/';
-                router.push(returnUrl);
+                router.push('/');
             })
-            .catch(alertService.error);
+            // .catch(alertService.error);
     }
 
     return (
@@ -41,12 +41,12 @@ function Login() {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="form-group">
                             <label>Username</label>
-                            <input name="username" type="text" {...register('username')} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
+                            <input type="text" {...register('username')} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.username?.message}</div>
                         </div>
                         <div className="form-group">
                             <label>Password</label>
-                            <input name="password" type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
+                            <input type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.password?.message}</div>
                         </div>
                         <button disabled={formState.isSubmitting} className="btn btn-primary">

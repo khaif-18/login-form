@@ -4,12 +4,14 @@ import { useRouter } from 'next/router';
 
 import 'styles/globals.css';
 
-import { userService } from 'services';
-import { Nav, Alert } from 'components';
+import { userService } from '@/services/user.service';
+import { Nav } from '@/components/Nav';
+import { AlertComponent } from '@/components/AlertComponent';
+import { AppPropsType } from 'next/dist/shared/lib/utils';
 
 export default App;
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps }: AppPropsType) {
     const router = useRouter();
     const [user, setUser] = useState(null);
     const [authorized, setAuthorized] = useState(false);
@@ -34,7 +36,7 @@ function App({ Component, pageProps }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    function authCheck(url) {
+    function authCheck(url: string) {
         // redirect to login page if accessing a private page and not logged in 
         setUser(userService.userValue);
         const publicPaths = ['/account/login', '/account/register'];
@@ -56,12 +58,12 @@ function App({ Component, pageProps }) {
                 <title>Next.js 11 - User Registration and Login Example</title>
                 
                 {/* eslint-disable-next-line @next/next/no-css-tags */}
-                <link href="//netdna.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+                <link href="https://netdna.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
             </Head>
 
             <div className={`app-container ${user ? 'bg-light' : ''}`}>
                 <Nav />
-                <Alert />
+                <AlertComponent />
                 {authorized &&
                     <Component {...pageProps} />
                 }

@@ -1,6 +1,6 @@
 import getConfig from 'next/config';
 
-import { userService } from 'services';
+import { userService } from '@/services/user.service';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -11,16 +11,16 @@ export const fetchWrapper = {
     delete: _delete
 };
 
-function get(url) {
-    const requestOptions = {
+function get(url: string) {
+    const requestOptions: RequestInit = {
         method: 'GET',
         headers: authHeader(url)
     };
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-function post(url, body) {
-    const requestOptions = {
+function post(url: string, body: any) {
+    const requestOptions: RequestInit = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeader(url) },
         credentials: 'include',
@@ -29,18 +29,18 @@ function post(url, body) {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-function put(url, body) {
-    const requestOptions = {
+function put(url: string, body: any) {
+    const requestOptions: RequestInit = {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', ...authHeader(url) },
         body: JSON.stringify(body)
     };
-    return fetch(url, requestOptions).then(handleResponse);    
+    return fetch(url, requestOptions).then(handleResponse);
 }
 
 // prefixed with underscored because delete is a reserved word in javascript
-function _delete(url) {
-    const requestOptions = {
+function _delete(url: string) {
+    const requestOptions: RequestInit = {
         method: 'DELETE',
         headers: authHeader(url)
     };
@@ -49,7 +49,7 @@ function _delete(url) {
 
 // helper functions
 
-function authHeader(url) {
+function authHeader(url: string): HeadersInit {
     // return auth header with jwt if user is logged in and request is to the api url
     const user = userService.userValue;
     const isLoggedIn = user && user.token;
@@ -61,10 +61,10 @@ function authHeader(url) {
     }
 }
 
-function handleResponse(response) {
+function handleResponse(response: Response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
-        
+
         if (!response.ok) {
             if ([401, 403].includes(response.status) && userService.userValue) {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api

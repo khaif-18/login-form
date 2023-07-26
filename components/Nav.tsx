@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 
-import { NavLink } from '.';
-import { userService } from 'services';
+import { userService } from '@/services/user.service';
 
-export { Nav };
-
-function Nav() {
+export function Nav() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -23,8 +20,8 @@ function Nav() {
     return (
         <nav className="navbar navbar-expand navbar-dark bg-dark">
             <div className="navbar-nav">
-                <NavLink href="/" exact className="nav-item nav-link">Home</NavLink>
-                <NavLink href="/users" className="nav-item nav-link">Users</NavLink>
+                {/* <NavLink href="/" exact className="nav-item nav-link">Home</NavLink>
+                <NavLink href="/users" className="nav-item nav-link">Users</NavLink> */}
                 <a onClick={logout} className="nav-item nav-link">Logout</a>
             </div>
         </nav>
