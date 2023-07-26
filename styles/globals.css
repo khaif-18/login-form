@@ -1,5 +1,6 @@
-a { cursor: pointer; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.app-container {
-    min-height: 350px;
+@layer base {
 }
